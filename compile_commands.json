@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/Users/connorfrancis/src/chat/chat-backend/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/connorfrancis/src/chat/chat-backend/external/crow/include -I/Users/connorfrancis/src/chat/chat-backend/external/asio/asio/include -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=15.1 -o CMakeFiles/MyCrowApp.dir/main.cpp.o -c /Users/connorfrancis/src/chat/chat-backend/main.cpp",
+  "file": "/Users/connorfrancis/src/chat/chat-backend/main.cpp",
+  "output": "CMakeFiles/MyCrowApp.dir/main.cpp.o"
+}
+]
