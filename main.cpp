@@ -10,38 +10,40 @@
 #define PORT 3000
 
 
-void getLocal(struct addrinfo*);
+void getLocal(struct addrinfo**);
 int makeSocket(struct addrinfo*);
 void enableReuse(int);
 void bindInitial(int, struct addrinfo*);
 void listenInitial(int);
+void acceptNewConns(int, sockaddr_storage, int);
 
 int main(int argc, char const* argv[]) {
+    struct sockaddr_storage their_addr;
     struct addrinfo *res;
-    int sockfd;
+    int sockfd, new_fd;
 
-    getLocal(res);
+    getLocal(&res);
     sockfd = makeSocket(res);
     enableReuse(sockfd);
     bindInitial(sockfd, res);
     listenInitial(sockfd);
+    acceptNewConns(sockfd, their_addr, new_fd);
     freeaddrinfo(res);
 
 }
 
-void getLocal(struct addrinfo *res) {
+void getLocal(struct addrinfo **res) {
     struct addrinfo hints;
     int status;
     memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_UNSPEC;  // use IPv4 or IPv6, whichever
+    hints.ai_family = AF_UNSPEC;  
     hints.ai_socktype = SOCK_STREAM;
-    hints.ai_flags = AI_PASSIVE;     // fill in my IP for me
+    hints.ai_flags = AI_PASSIVE;     
 
-    if ((status = getaddrinfo(NULL, "3000", &hints, &res)) != 0) {
+    if ((status = getaddrinfo(NULL, "3000", &hints, res)) != 0) {
         fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
         exit(1);
     }
-    freeaddrinfo(&hints);
 }
 
 int makeSocket(struct addrinfo *res) {
@@ -71,6 +73,15 @@ void bindInitial(int sockfd, struct addrinfo *res) {
 void listenInitial(int sockfd) {
     if ((listen(sockfd, 20)) == -1) {
         perror("listening on socket");
+        exit(1);
+    }
+}
+
+void acceptNewConns(int sockfd, struct sockaddr_storage their_addr, int new_fd) {
+    socklen_t addr_size;
+    addr_size = sizeof their_addr;
+    if (((new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &addr_size)) = -1)) {
+        perror("accepting new connections");
         exit(1);
     }
 }
