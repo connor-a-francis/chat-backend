@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.10)
 project(ChatBackend)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17)
-include(CTest)
 
 ###########################
 #                         #
@@ -71,20 +70,7 @@ FetchContent_MakeAvailable(googletest)
 ###########################
 #       TEST BUILD        #
 ###########################
-
-
-
 target_link_libraries(tests GTest::gtest_main ${SQLITE3_LIBRARY} pthread)
-target_compile_options(tests PRIVATE -coverage)
-target_link_options(tests PRIVATE -coverage)
-
-set(EXCLUDE_EXTERNAL ".*external.*")  # Exclude external libraries' files
-set(EXCLUDE_TESTS ".*test.*")  # Exclude external libraries' files
-set(EXCLUDE_BUILD ".*build.*")  # Exclude external libraries' files
-add_custom_target(coverage
-    COMMAND gcovr -r ${CMAKE_SOURCE_DIR} --exclude ${EXCLUDE_EXTERNAL} --exclude ${EXCLUDE_TESTS} --exclude ${EXCLUDE_BUILD} -s
-)
-
 enable_testing()
 include(GoogleTest)
 gtest_discover_tests(tests)
