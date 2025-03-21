@@ -13,3 +13,6 @@ This pulls down submodules in the `external` directory that we need to build the
 - `mkdir build && cd build && cmake .. && make` </br>
 This generates our MakeFile and builds against it, giving us a single binary to run! </br>
 Subsequent runs can just use `make` while in the build directory.
+
+## Running the tests:
+- `make && ctest`
