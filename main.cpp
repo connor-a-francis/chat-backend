@@ -1,31 +1,14 @@
-#include <crow/http_response.h>
-#include <crow.h>
-#include <sqlite3.h>
 #include <stdlib.h>
-#include <string>
+#include <sqlite3.h>
+#include <crow.h>
+#include <crow/app.h>
+#include <crow/http_response.h>
+#include "database.h"
+#include "lib/app.h"
 
-
-crow::response hello_world(const crow::request& req) {
-   return crow::response(req.remote_ip_address);
-}
+#define CROW_ENFORCE_WS_SPEC 
 
 int main() {
-  crow::SimpleApp app;
-  sqlite3 *db;
-  int rc;
-
-  rc = sqlite3_open("./chat.db", &db);
-
-   if( rc ) {
-      fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
-      return(0);
-   }
-
-  CROW_ROUTE(app, "/")(hello_world);
-
-
-
-
+  auto app = make_app(PROD);
   app.port(8080).run();
 }
-
